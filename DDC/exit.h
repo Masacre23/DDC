@@ -14,8 +14,9 @@ public:
 	~Exit();
 
 	void Look() const;
-	Room* Exit::GetDestination(const Room* room) const;
-	
+	const string& Exit::GetNameFrom(const Room* room) const;
+	Room* Exit::GetDestinationFrom(const Room* room) const;
+
 	string opposite_name;
 	Room* destination;
 };

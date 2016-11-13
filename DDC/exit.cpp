@@ -20,7 +20,17 @@ void Exit::Look() const
 	cout << "You are going to " + opposite_name;
 }
 
-Room* Exit::GetDestination(const Room* room) const
+const string& Exit::GetNameFrom(const Room* room) const
+{
+	if (room == parent)
+		return name;
+	if (room == destination)
+		return opposite_name;
+
+	return name;
+}
+
+Room* Exit::GetDestinationFrom(const Room* room) const
 {
 	if (room == parent)
 		return destination;

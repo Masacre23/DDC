@@ -1,6 +1,7 @@
 #include <iostream>
 #include "room.h"
 #include "exit.h"
+#include "item.h"
 
 
 Room::Room(const char* name, const char* description) : Entity(name, description, NULL)
@@ -25,13 +26,29 @@ void Room::Look() const
 		{
 			Exit* ex = (Exit*)*a;
 			if(numExits == 1)
-				cout << "\nYou can exit for the " + ex->name + " and go to the " + ex->opposite_name;
+				cout << "\nYou can exit " + ex->GetNameFrom(this) + " and go to " + ex->GetDestinationFrom(this)->name;
 			if (numExits == 2)
-				cout << " or " + ex->opposite_name;
+				cout << " or " + ex->GetDestinationFrom(this)->name;
 			numExits++;
 		}
 	}
-	cout << ".";
+	cout << ".\n";
+
+	//Items
+	bool b = false;
+	string s = "Items in the room:\n";
+	for (auto a = container.begin(); a != container.end(); ++a)
+	{
+		if ((*a)->type == ITEM)
+		{
+			b = true;
+			Item* item = (Item*)*a;
+			s += (*a)->name + "\n";
+		}
+	}
+
+	if (b)
+		cout << s;
 }
 
 Exit* Room::GetExit(const string& direction) const

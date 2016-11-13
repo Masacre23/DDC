@@ -18,8 +18,11 @@ public:
 
 	bool Go(const vector<string>& args);
 	void Look(const vector<string>& args) const;
+	void Stats() const;
 
 	Room* GetRoom() const;
+
+	int popularity, intelligence, strength, charm, relationship1, relationship2;
 };
 
 #endif

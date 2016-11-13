@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "world.h"
-//main -> world -> entity -> creature, items, exit, rooms
+
 using namespace std;
 
 
@@ -28,11 +28,6 @@ void Tokenize(string s, vector <string>& v)
 		}
 	}
 	v.push_back(aux);
-
-	
-
-	//for (vector<string>::iterator it = v.begin(); it != v.end(); ++it)
-	//	cout << ' ' << *it;
 }
 
 int main()
@@ -43,6 +38,8 @@ int main()
 	vector<string> arguments;
 
 	World myWorld;
+
+	system("color 0E");
 
 	cout << "Welcome to Disco Dance club" << endl;
 

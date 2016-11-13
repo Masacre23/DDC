@@ -17,8 +17,14 @@ void Player::Look(const vector<string>& args) const
 {
 	if (args.size() > 1)
 	{
-		//parent->Look();
-
+		for (auto a = parent->container.begin(); a != parent->container.cend(); ++a)
+		{
+			if (args[1] == (*a)->name)
+			{
+				(*a)->Look();
+				return;
+			}
+		}
 
 		if (args[1] == "myself")
 		{
@@ -44,8 +50,20 @@ bool Player::Go(const vector<string>& args)
 
 	cout <<"\nYou have come to " + args[1] + "...\n";
 
-	ChangeParentTo(exit->GetDestination((Room*)parent));
+	ChangeParentTo(exit->GetDestinationFrom((Room*)parent));
 
 	return true;
 }
+
+void Player::Stats() const
+{
+	cout << "\nPopularity: " << popularity << endl;
+	cout << "Intelligence: " << intelligence << endl;
+	cout << "Strength: " << strength << endl;
+	cout << "Charm: " << charm << endl;
+	cout << "Relationship with Hanna: " << relationship1 << endl;
+	cout << "Relationship with Roberto: " << relationship2 << endl;
+}
+
+
 
