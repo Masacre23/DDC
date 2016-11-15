@@ -6,6 +6,7 @@
 #include "room.h"
 #include "exit.h"
 #include "item.h"
+#include "npc.h"
 
 class Room;
 
@@ -14,7 +15,7 @@ using namespace std;
 class Player : public Entity
 {
 public:
-	Player(const char* name, const char* description, Room* room);
+	Player(const char* name, const char* description, Room* room, int popularity, int intelligence, int strength, int charm, int money);
 	~Player();
 
 	bool Go(const vector<string>& args);
@@ -25,10 +26,13 @@ public:
 	void Drop(const vector <string>& args);
 	void Talk(const vector<string>& args);
 	bool Put(const vector<string>& args);
+	void Work();
+	void Exercise();
+	void Drink();
 
 	Room* GetRoom() const;
 
-	int popularity, intelligence, strength, charm, relationship1, relationship2;
+	int popularity, intelligence, strength, charm, money;
 };
 
 #endif

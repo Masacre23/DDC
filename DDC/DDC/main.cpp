@@ -16,7 +16,7 @@ void Tokenize(string s, vector <string>& v)
 	string aux = "";
 	int numWords = 0;
 
-	for (int i = 0; i < s.size(); ++i)
+	for (unsigned i = 0; i < s.size(); ++i)
 	{
 		if (str[i] != ' ')
 		{

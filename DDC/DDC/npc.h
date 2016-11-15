@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "room.h"
+#include <string>
 
 class Room;
 
@@ -11,10 +12,18 @@ using namespace std;
 class NPC : public Entity
 {
 public:
-	NPC(const char* name, const char* description, Room* room);
+	NPC(const char* name, const char* description, Room* room, int charm[3], int popularity[3], int strength[3], int intelligence[3], string greaction[9], string breaction[11]);
 	~NPC();
 
 	void Look() const;
+
+	int relationShip;
+	int charmRequired[3];
+	int popularityRequired[3];
+	int strenghtRequired[3];
+	int intelligenceRequired[3];
+	string goodReactions[9];
+	string badReactions[12];
 };
 
 #endif

@@ -2,8 +2,8 @@
 #include "player.h"
 
 
-Player::Player(const char* name, const char* description, Room* room) : 
-Entity(name, description, room)
+Player::Player(const char* name, const char* description, Room* room, int popularity, int intelligence, int strength, int charm, int money) :
+Entity(name, description, room), popularity(popularity), intelligence(intelligence), strength(strength), charm(charm), money(money)
 {
 	type = PLAYER;
 }
@@ -61,8 +61,9 @@ void Player::Stats() const
 	cout << "Intelligence: " << intelligence << endl;
 	cout << "Strength: " << strength << endl;
 	cout << "Charm: " << charm << endl;
-	cout << "Relationship with Hanna: " << relationship1 << endl;
-	cout << "Relationship with Roberto: " << relationship2 << endl;
+	cout << "Money: " << money << endl;
+	//cout << "Relationship with Hanna: " << relationshipH << endl;
+	//cout << "Relationship with Roberto: " << relationshipR << endl;
 }
 
 void Player::Inventory() const
@@ -88,19 +89,6 @@ void Player::Inventory() const
 
 bool Player::Take(const vector<string>& args)
 {
-	
-		/*for (auto a = parent->container.begin(); a != parent->container.cend(); ++a)
-		{
-			if ((*a)->type == ITEM && (*a)->name == args[1])
-			{
-
-				(*a)->ChangeParentTo(this);
-
-				cout << "\nYou have taked " << (*a)->name << ".\n";
-				return;
-			}
-
-		}*/
 	if (args.size() == 4)
 	{
 		Item* item = (Item*)parent->Find(args[3], ITEM);
@@ -178,7 +166,8 @@ bool Player::Put(const vector<string>& args)
 		}
 
 		cout << "\nYou put " << item->name << " into " << container->name << ".\n";
-		item->ChangeParentTo(container);
+		if(container->storable == false && item->storable == true)
+			item->ChangeParentTo(container);
 
 		return true;
 	}
@@ -188,17 +177,67 @@ bool Player::Put(const vector<string>& args)
 void Player::Talk(const vector<string>& args)
 {
 	bool b = false;
+	int input;
 
 	for (auto a = parent->container.begin(); a != parent->container.cend(); ++a)
 	{
 		if ((*a)->type == PEOPLE && (*a)->name == args[1])
 		{
+			NPC* npc = (NPC*)*a;
 			while (true)
 			{
-				cout << "\n1.- ";
+				cout << "\n1.- Chat\n2.- Gossip\n3.- Compliment\n4.- Give Gift\n5.- Dance\n6.- Hug\n7.- Wohoo\n8.- Propose marriage\n9.- Insult\n10.- Slap\n11.- Fight\n>";
+				cin >> input;
+				if (input == NULL)
+				{
+					break;
+				}
+				if (charm >= npc->charmRequired[input / 3] && popularity >= npc->popularityRequired[input / 3] && popularity >= npc->strenghtRequired[input / 3] && intelligence >= npc->intelligenceRequired[input / 3] && npc->relationShip >= 30 * input / 3)
+				{
+					cout << "\n" << npc->goodReactions[input-1] << endl;
+					npc->relationShip += 1 * input;
+				}
+				else
+				{
+					cout << "\n" << npc->badReactions[input-1] << endl;
+					npc->relationShip -= 1 * input;
+				}
+				
 				break;
 			}
 		}
 	}
+}
 
+void Player::Work()
+{
+	if (parent->name == "Work")
+	{
+		money += 50;
+		cout << "\nYou have obtained 50$.\n";
+	}
+	else
+		cout << "\nYou can`t work here\n";
+}
+
+void Player::Exercise()
+{
+	if (parent->name == "Gym")
+	{
+		strength += 5;
+		cout << "\nYou have obtained +5 strength.\n";
+	}
+	else
+		cout << "\nYou can`t do exercise here\n";
+}
+
+void Player::Drink()
+{
+	if (parent->name == "Disco")
+	{
+		charm += 5;
+		cout << "\nYou have obtained +5 charm.\n";
+	}
+	else
+		cout << "\nYou can`t drink here\n";
 }
