@@ -37,11 +37,13 @@ int main()
 	bool repeat = true;
 	vector<string> arguments;
 
+	system("color 0E");
+	cout << "Welcome to Disco Dance club" << endl;
+	cout << "Your mission is to find the love of your life, you only have 10 days.\nBefore starting you need to answer a few questions:\n";
+	
 	World myWorld;
 
-	system("color 0E");
-
-	cout << "Welcome to Disco Dance club" << endl;
+	cout << "\nNow you can start the game, write 'help' if you don't know the commands.\n";
 
 	arguments.push_back("look");
 	myWorld.ParseCommand(arguments);

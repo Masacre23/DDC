@@ -2,6 +2,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include "npc.h"
 
 using namespace std;
 

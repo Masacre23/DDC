@@ -32,6 +32,8 @@ void Room::Look() const
 				cout << "\nYou can exit " + ex->GetNameFrom(this) + " and go to " + ex->GetDestinationFrom(this)->name;
 			if (numExits == 2)
 				cout << " or " + ex->GetDestinationFrom(this)->name;
+			if (numExits > 2)
+				cout << ", " + ex->GetDestinationFrom(this)->name;
 			numExits++;
 		}
 	}
@@ -73,11 +75,12 @@ Exit* Room::GetExit(const string& direction) const
 		if ((*a)->type == EXIT)
 		{
 			Exit* ex = (Exit*)*a;
-			if (ex->opposite_name == direction)
+			if (ex->opposite_name == direction || ex->name == direction)
 			{
 				return ex;
 			}
 		}
 	}
+	cout << "\nYou can`t go there.\n";
 	return NULL;
 }

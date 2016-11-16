@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include "player.h"
 
 
@@ -51,12 +52,13 @@ bool Player::Go(const vector<string>& args)
 	cout <<"\nYou have come to " + args[1] + "...\n";
 
 	ChangeParentTo(exit->GetDestinationFrom((Room*)parent));
-
+	Time(0, 15);
 	return true;
 }
 
 void Player::Stats() const
 {
+	cout << "\nDay " << day << " " << hours << ":" << minutes;
 	cout << "\nPopularity: " << popularity << endl;
 	cout << "Intelligence: " << intelligence << endl;
 	cout << "Strength: " << strength << endl;
@@ -123,12 +125,11 @@ bool Player::Take(const vector<string>& args)
 			cout << "\nThere is no item with that name.\n";
 			return false;
 		}
-		cout << "\nYou have taked " << item->name << ".\n";
+		cout << "\nYou take " << item->name << ".\n";
 		item->ChangeParentTo(this);
 
 	}
 	return true;
-	//cout << "\nThere is no item with that name.\n";
 }
 
 void Player::Drop(const vector<string>& args)
@@ -184,26 +185,60 @@ void Player::Talk(const vector<string>& args)
 		if ((*a)->type == PEOPLE && (*a)->name == args[1])
 		{
 			NPC* npc = (NPC*)*a;
+			cout << "\n1.- Chat\n2.- Gossip\n3.- Compliment\n4.- Give Gift\n5.- Dance\n6.- Hug\n7.- Kiss\n8.- Wohoo\n9.- Propose marriage\n10.- Insult\n11.- Slap\n12.- Fight\n0.- Exit\n>";
 			while (true)
 			{
-				cout << "\n1.- Chat\n2.- Gossip\n3.- Compliment\n4.- Give Gift\n5.- Dance\n6.- Hug\n7.- Wohoo\n8.- Propose marriage\n9.- Insult\n10.- Slap\n11.- Fight\n>";
 				cin >> input;
-				if (input == NULL)
+				if (input == NULL || input < 0 || input > 12)
 				{
 					break;
 				}
-				if (charm >= npc->charmRequired[input / 3] && popularity >= npc->popularityRequired[input / 3] && popularity >= npc->strenghtRequired[input / 3] && intelligence >= npc->intelligenceRequired[input / 3] && npc->relationShip >= 30 * input / 3)
+				if (charm >= npc->charmRequired[(input-1) / 3] && popularity >= npc->popularityRequired[(input - 1)/3] && popularity >= npc->strenghtRequired[(input - 1)/3] && intelligence >= npc->intelligenceRequired[(input - 1)/3] )
 				{
-					cout << "\n" << npc->goodReactions[input-1] << endl;
-					npc->relationShip += 1 * input;
+					if (npc->relationShip >= 30 * (input - 1) / 3 || input <= 3)
+					{
+						if (input != 5)
+						{
+							cout << "\n" << npc->goodReactions[input - 1] << endl;
+							npc->relationShip += 1 * input;
+							popularity++;
+
+							if (input == 9)
+							{
+								cout << "\nYou have won the game. <3\n";
+								Sleep(5000);
+								exit(0);
+							}
+						}
+						else
+						{
+							Entity* chocolate = Find("chocolate", ITEM);
+							if (chocolate != NULL && chocolate->parent->type == PLAYER)
+							{
+								chocolate->ChangeParentTo(NULL);
+								cout << "\nHmmm...tasty.\n" << endl;
+								npc->relationShip += 1 * input;
+							}
+							else
+							{
+								cout << "\nYou don't have a gift." << endl;
+								npc->relationShip -= 1 * input;
+							}
+						}
+						
+					}
+					else
+					{
+						cout << "\n" << npc->badReactions[input - 1] << endl;
+						npc->relationShip -= 1 * input;
+					}
 				}
 				else
 				{
 					cout << "\n" << npc->badReactions[input-1] << endl;
 					npc->relationShip -= 1 * input;
 				}
-				
-				break;
+				Time(0, 15);
 			}
 		}
 	}
@@ -211,10 +246,16 @@ void Player::Talk(const vector<string>& args)
 
 void Player::Work()
 {
-	if (parent->name == "Work")
+	if (parent->name == "Work" )
 	{
-		money += 50;
-		cout << "\nYou have obtained 50$.\n";
+		if (7 < hours && hours < 18)
+		{
+			money += 50;
+			Time(1, 0);
+			cout << "\nYou have obtained 50$.\n";
+		}
+		else
+			cout << "\nYou can't work now.\n";
 	}
 	else
 		cout << "\nYou can`t work here\n";
@@ -224,8 +265,14 @@ void Player::Exercise()
 {
 	if (parent->name == "Gym")
 	{
-		strength += 5;
-		cout << "\nYou have obtained +5 strength.\n";
+		if (hours < 24 && hours > 6)
+		{
+			strength += 5;
+			Time(1, 0);
+			cout << "\nYou have obtained +5 strength.\n";
+		}
+		else
+			cout << "\nThe gym is closed.\n";
 	}
 	else
 		cout << "\nYou can`t do exercise here\n";
@@ -235,9 +282,54 @@ void Player::Drink()
 {
 	if (parent->name == "Disco")
 	{
-		charm += 5;
-		cout << "\nYou have obtained +5 charm.\n";
+		if (hours >= 0 && hours < 6)
+		{
+			if (money > 10)
+			{
+				charm += 5;
+				money -= 10;
+				Time(0, 30);
+				cout << "\nYou have obtained +5 charm and losed 10$.\n";
+			}
+			else
+				cout << "\nYou don't have enought money.\n";
+		}
+		else
+			cout << "\nThe disco is closing.\n";
 	}
 	else
 		cout << "\nYou can`t drink here\n";
+}
+
+void Player::Study()
+{
+	if (parent->name == "Library")
+	{
+		if (hours > 7 && hours < 18)
+		{
+			intelligence += 5;
+			Time(1, 0);
+			cout << "\nYou have obtained +5 intelligence.\n";
+		}
+		else
+			cout << "\nThe library is closed.\n";
+	}
+	else
+		cout << "\nYou can`t study here\n";
+}
+
+void Player::Time(int h, int m)
+{
+	hours += h;
+	minutes += m;
+	if (minutes >= 60)
+	{
+		minutes -= 60;
+		++hours;
+	}
+	if (hours >= 24)
+	{
+		hours -= 24;
+		++day;
+	}
 }

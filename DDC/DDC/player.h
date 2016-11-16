@@ -29,9 +29,12 @@ public:
 	void Work();
 	void Exercise();
 	void Drink();
+	void Study();
+	void Time(int h, int m);
 
 	Room* GetRoom() const;
 
+	int day, hours, minutes;
 	int popularity, intelligence, strength, charm, money;
 };
 
