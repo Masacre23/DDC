@@ -2,6 +2,7 @@
 #include "room.h"
 #include "exit.h"
 #include "item.h"
+#include "npc.h"
 
 
 Room::Room(const char* name, const char* description) : Entity(name, description, NULL)
@@ -17,6 +18,8 @@ Room::~Room()
 void Room::Look() const
 {
 	cout << "\n" + name + "\n" + description + "\n";
+	bool b = false;
+	string s;
 
 	//Exit
 	int numExits = 1;
@@ -29,24 +32,38 @@ void Room::Look() const
 				cout << "\nYou can exit " + ex->GetNameFrom(this) + " and go to " + ex->GetDestinationFrom(this)->name;
 			if (numExits == 2)
 				cout << " or " + ex->GetDestinationFrom(this)->name;
+			if (numExits > 2)
+				cout << ", " + ex->GetDestinationFrom(this)->name;
 			numExits++;
 		}
 	}
 	cout << ".\n";
 
 	//Items
-	bool b = false;
-	string s = "Items in the room:\n";
+	s = "Items in the room:\n";
 	for (auto a = container.begin(); a != container.end(); ++a)
 	{
 		if ((*a)->type == ITEM)
 		{
 			b = true;
-			Item* item = (Item*)*a;
+			//Item* item = (Item*)*a;
 			s += (*a)->name + "\n";
 		}
 	}
+	if (b)
+		cout << s;
 
+	//NPCs
+	b = false;
+	s = "People in the room:\n";
+	for (auto a = container.begin(); a != container.cend(); ++a)
+	{
+		if ((*a)->type == PEOPLE)
+		{
+			b = true;
+			s += (*a)->name + "\n";
+		}
+	}
 	if (b)
 		cout << s;
 }
@@ -58,11 +75,12 @@ Exit* Room::GetExit(const string& direction) const
 		if ((*a)->type == EXIT)
 		{
 			Exit* ex = (Exit*)*a;
-			if (ex->opposite_name == direction)
+			if (ex->opposite_name == direction || ex->name == direction)
 			{
 				return ex;
 			}
 		}
 	}
+	cout << "\nYou can`t go there.\n";
 	return NULL;
 }

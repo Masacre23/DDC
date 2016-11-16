@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-Item::Item(const char* name, const char* description, Entity* parent):
-Entity(name, description, parent)
+Item::Item(const char* name, const char* description, Entity* parent, bool b):
+Entity(name, description, parent), storable(b)
 {
 	type = ITEM;
 }

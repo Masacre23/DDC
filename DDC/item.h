@@ -7,10 +7,12 @@ using namespace std;
 class Item : public Entity
 {
 public:
-	Item(const char* name, const char* description, Entity* room);
+	Item(const char* name, const char* description, Entity* room, bool b);
 	~Item();
 
 	void Look() const;
+
+	bool storable;
 };
 
 #endif

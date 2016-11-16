@@ -19,5 +19,6 @@ public:
 private:
 	list<Entity*> entities;
 	Player* player;
+	
 };
 

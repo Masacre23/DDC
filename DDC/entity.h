@@ -12,7 +12,7 @@ enum EntityType
 	ROOM,
 	EXIT,
 	ITEM,
-	NPC,
+	PEOPLE,
 	PLAYER
 };
 
@@ -24,6 +24,7 @@ public:
 
 	virtual void Look() const;
 	void ChangeParentTo(Entity* new_parent);
+	Entity* Find(const string& name, EntityType type) const;
 
 	EntityType type;
 	string name;
