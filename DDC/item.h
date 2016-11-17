@@ -10,7 +10,7 @@ public:
 	Item(const char* name, const char* description, Entity* room, bool b);
 	~Item();
 
-	void Look() const;
+	void Look() const; //Show information about the item
 
 	bool storable;
 };

@@ -4,31 +4,9 @@
 #include <string>
 #include <vector>
 #include "world.h"
+#include "auxiliar.h"
 
 using namespace std;
-
-
-void Tokenize(string s, vector <string>& v)
-{
-	char str[1024];
-	strncpy_s(str, s.c_str(), sizeof(str));
-	str[sizeof(str) - 1] = 0;
-	string aux = "";
-	int numWords = 0;
-
-	for (unsigned i = 0; i < s.size(); ++i)
-	{
-		if (str[i] != ' ')
-		{
-			aux = aux + str[i];
-		}
-		else {
-			v.push_back(aux);
-			aux = ""+NULL;
-		}
-	}
-	v.push_back(aux);
-}
 
 int main()
 {
@@ -37,11 +15,13 @@ int main()
 	bool repeat = true;
 	vector<string> arguments;
 
+	system("color 0E");
+	cout << "Welcome to Disco Dance club" << endl;
+	cout << "Your mission is to find the love of your life, you only have 10 days.\nBefore starting you need to answer a few questions:\n";
+	
 	World myWorld;
 
-	system("color 0E");
-
-	cout << "Welcome to Disco Dance club" << endl;
+	cout << "\nNow you can start the game, write 'help' if you don't know the commands.\n";
 
 	arguments.push_back("look");
 	myWorld.ParseCommand(arguments);

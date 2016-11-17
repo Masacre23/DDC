@@ -10,11 +10,12 @@ Room::Room(const char* name, const char* description) : Entity(name, description
 	type = ROOM;
 }
 
-
+//****************************************************************************//
 Room::~Room()
 {
 }
 
+//****************************************************************************//
 void Room::Look() const
 {
 	cout << "\n" + name + "\n" + description + "\n";
@@ -46,7 +47,6 @@ void Room::Look() const
 		if ((*a)->type == ITEM)
 		{
 			b = true;
-			//Item* item = (Item*)*a;
 			s += (*a)->name + "\n";
 		}
 	}
@@ -68,6 +68,7 @@ void Room::Look() const
 		cout << s;
 }
 
+//****************************************************************************//
 Exit* Room::GetExit(const string& direction) const
 {
 	for (auto a = container.begin(); a != container.end(); ++a)

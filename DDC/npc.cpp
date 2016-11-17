@@ -6,7 +6,7 @@ NPC::NPC(const char* name, const char* description, Room* room, int charm[3], in
 	Entity(name, description, room)
 {
 	type = PEOPLE;
-	for (int i = 0; i < 11; ++i)
+	for (int i = 0; i <= 11; ++i)
 	{
 		if (i < 3)
 		{
@@ -21,11 +21,12 @@ NPC::NPC(const char* name, const char* description, Room* room, int charm[3], in
 	}
 }
 
-
+//****************************************************************************//
 NPC::~NPC()
 {
 }
 
+//****************************************************************************//
 void NPC::Look() const
 {
 	cout <<endl << name << endl << description;

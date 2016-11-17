@@ -9,17 +9,19 @@ Entity(name, description, (Entity*) origin),opposite_name(opposite_name), destin
 	destination->container.push_back(this);
 }
 
-
+//****************************************************************************//
 Exit::~Exit()
 {
 
 }
 
+//****************************************************************************//
 void Exit::Look() const
 {
 	cout << "You are going to " + opposite_name;
 }
 
+//****************************************************************************//
 const string& Exit::GetNameFrom(const Room* room) const
 {
 	if (room == parent)
@@ -30,6 +32,7 @@ const string& Exit::GetNameFrom(const Room* room) const
 	return name;
 }
 
+//****************************************************************************//
 Room* Exit::GetDestinationFrom(const Room* room) const
 {
 	if (room == parent)

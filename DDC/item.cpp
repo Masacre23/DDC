@@ -8,20 +8,22 @@ Entity(name, description, parent), storable(b)
 	type = ITEM;
 }
 
-
+//****************************************************************************//
 Item::~Item()
 {
 }
 
+//****************************************************************************//
 void Item::Look() const
 {
 	cout << "\n" + name + "\n" + description + "\n";
 	int numItems = 0;
+
 	for (auto a = container.begin(); a != container.end(); ++a)
 	{
 		if ((*a)->type == ITEM)
 		{
-			if ((*a)->parent->type == ITEM) //Si es un objeto dentro de otro
+			if ((*a)->parent->type == ITEM) //If it's an item inside other
 			{
 				if (!numItems)
 					cout << "It contains:\n" + (*a)->name + "\n";

@@ -17,7 +17,7 @@ public:
 	Room(const char* name, const char* description);
 	~Room();
 
-	void Look() const;
+	void Look() const; //Show the entities inside the room
 
 	Exit* GetExit(const string& direction) const;
 };

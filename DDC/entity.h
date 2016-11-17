@@ -22,8 +22,8 @@ public:
 	Entity(const char* name, const char* description, Entity* parent);
 	virtual ~Entity();
 
-	virtual void Look() const;
-	void ChangeParentTo(Entity* new_parent);
+	virtual void Look() const; //Describe the room
+	void ChangeParentTo(Entity* new_parent); 
 	Entity* Find(const string& name, EntityType type) const;
 
 	EntityType type;

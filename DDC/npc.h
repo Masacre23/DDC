@@ -15,13 +15,17 @@ public:
 	NPC(const char* name, const char* description, Room* room, int charm[3], int popularity[3], int strength[3], int intelligence[3], string greaction[9], string breaction[11]);
 	~NPC();
 
-	void Look() const;
+	void Look() const; //Show info about the NPC
 
 	int relationShip;
+
+	//Habilities required for speak with the npcs
 	int charmRequired[3];
 	int popularityRequired[3];
 	int strenghtRequired[3];
 	int intelligenceRequired[3];
+
+	//The conversations
 	string goodReactions[9];
 	string badReactions[12];
 };

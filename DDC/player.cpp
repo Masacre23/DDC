@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include "player.h"
 
 
@@ -8,11 +9,12 @@ Entity(name, description, room), popularity(popularity), intelligence(intelligen
 	type = PLAYER;
 }
 
-
+//****************************************************************************//
 Player::~Player()
 {
 }
 
+//****************************************************************************//
 void Player::Look(const vector<string>& args) const
 {
 	if (args.size() > 1)
@@ -37,11 +39,13 @@ void Player::Look(const vector<string>& args) const
 	}
 }
 
+//****************************************************************************//
 Room* Player::GetRoom() const
 {
 	return (Room*)parent;
 }
 
+//****************************************************************************//
 bool Player::Go(const vector<string>& args)
 {
 	Exit* exit = GetRoom()->GetExit(args[1]);
@@ -55,6 +59,7 @@ bool Player::Go(const vector<string>& args)
 	return true;
 }
 
+//****************************************************************************//
 void Player::Stats() const
 {
 	cout << "\nDay " << day << " " << hours << ":" << minutes;
@@ -63,10 +68,9 @@ void Player::Stats() const
 	cout << "Strength: " << strength << endl;
 	cout << "Charm: " << charm << endl;
 	cout << "Money: " << money << endl;
-	//cout << "Relationship with Hanna: " << relationshipH << endl;
-	//cout << "Relationship with Roberto: " << relationshipR << endl;
 }
 
+//****************************************************************************//
 void Player::Inventory() const
 {
 	string s;
@@ -88,6 +92,7 @@ void Player::Inventory() const
 		cout << "\nYou don't have any items.\n";
 }
 
+//****************************************************************************//
 bool Player::Take(const vector<string>& args)
 {
 	if (args.size() == 4)
@@ -124,14 +129,14 @@ bool Player::Take(const vector<string>& args)
 			cout << "\nThere is no item with that name.\n";
 			return false;
 		}
-		cout << "\nYou have taked " << item->name << ".\n";
+		cout << "\nYou take " << item->name << ".\n";
 		item->ChangeParentTo(this);
 
 	}
 	return true;
-	//cout << "\nThere is no item with that name.\n";
 }
 
+//****************************************************************************//
 void Player::Drop(const vector<string>& args)
 {
 	for (auto a = container.begin(); a != container.cend(); ++a)
@@ -146,6 +151,7 @@ void Player::Drop(const vector<string>& args)
 	cout << "\nThere is no item with that name in your inventory.\n";
 }
 
+//****************************************************************************//
 bool Player::Put(const vector<string>& args)
 {
 	bool b = false;
@@ -175,6 +181,7 @@ bool Player::Put(const vector<string>& args)
 	return false;
 }
 
+//****************************************************************************//
 void Player::Talk(const vector<string>& args)
 {
 	bool b = false;
@@ -189,18 +196,54 @@ void Player::Talk(const vector<string>& args)
 			while (true)
 			{
 				cin >> input;
-				if (input == NULL)
+				if (input == NULL || input < 0 || input > 12)
 				{
+					cout << "\nI don't understand.\n";
 					break;
 				}
-				if (charm >= npc->charmRequired[input / 3] && popularity >= npc->popularityRequired[input / 3] && popularity >= npc->strenghtRequired[input / 3] && intelligence >= npc->intelligenceRequired[input / 3] && npc->relationShip >= 30 * input / 3)
+				if (charm >= npc->charmRequired[(input-1) / 3] && popularity >= npc->popularityRequired[(input - 1)/3] && popularity >= npc->strenghtRequired[(input - 1)/3] && intelligence >= npc->intelligenceRequired[(input - 1)/3] )
 				{
-					cout << "\n" << npc->goodReactions[input-1] << endl;
-					npc->relationShip += 1 * input;
+					if (npc->relationShip >= 30 * (input - 1) / 3 || input <= 3 || input < 9)
+					{
+						if (input != 5)
+						{
+							cout << "\n" << npc->goodReactions[input - 1];
+							npc->relationShip += 1 * input;
+							popularity++;
+
+							if (input == 9)
+							{
+								cout << "\nYou have won the game. <3\n";
+								Sleep(5000);
+								exit(0);
+							}
+						}
+						else
+						{
+							Entity* chocolate = Find("chocolate", ITEM);
+							if (chocolate != NULL && chocolate->parent->type == PLAYER)
+							{
+								chocolate->ChangeParentTo(NULL);
+								cout << "\nHmmm...tasty.\n" << endl;
+								npc->relationShip += 1 * input;
+							}
+							else
+							{
+								cout << "\nYou don't have a gift." << endl;
+								npc->relationShip -= 1 * input;
+							}
+						}
+						
+					}
+					else
+					{
+						cout << "\n" << npc->badReactions[input - 1];
+						npc->relationShip -= 1 * input;
+					}
 				}
 				else
 				{
-					cout << "\n" << npc->badReactions[input-1] << endl;
+					cout << "\n" << npc->badReactions[input-1];
 					npc->relationShip -= 1 * input;
 				}
 				Time(0, 15);
@@ -209,6 +252,7 @@ void Player::Talk(const vector<string>& args)
 	}
 }
 
+//****************************************************************************//
 void Player::Work()
 {
 	if (parent->name == "Work" )
@@ -226,6 +270,7 @@ void Player::Work()
 		cout << "\nYou can`t work here\n";
 }
 
+//****************************************************************************//
 void Player::Exercise()
 {
 	if (parent->name == "Gym")
@@ -243,6 +288,7 @@ void Player::Exercise()
 		cout << "\nYou can`t do exercise here\n";
 }
 
+//****************************************************************************//
 void Player::Drink()
 {
 	if (parent->name == "Disco")
@@ -266,6 +312,7 @@ void Player::Drink()
 		cout << "\nYou can`t drink here\n";
 }
 
+//****************************************************************************//
 void Player::Study()
 {
 	if (parent->name == "Library")
@@ -283,6 +330,7 @@ void Player::Study()
 		cout << "\nYou can`t study here\n";
 }
 
+//****************************************************************************//
 void Player::Time(int h, int m)
 {
 	hours += h;

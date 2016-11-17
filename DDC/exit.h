@@ -13,7 +13,7 @@ public:
 	Exit(const char* name, const char* opposite_name, const char* description, Room* origin, Room* destination);
 	~Exit();
 
-	void Look() const;
+	void Look() const; //Show information about the place you are going
 	const string& Exit::GetNameFrom(const Room* room) const;
 	Room* Exit::GetDestinationFrom(const Room* room) const;
 

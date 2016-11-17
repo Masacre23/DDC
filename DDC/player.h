@@ -7,8 +7,7 @@
 #include "exit.h"
 #include "item.h"
 #include "npc.h"
-
-class Room;
+#include "room.h"
 
 using namespace std;
 
